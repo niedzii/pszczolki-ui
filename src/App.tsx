@@ -4,13 +4,16 @@ import {Button} from "@material-ui/core";
 
 const App: React.FC = () => {
 
-    let [index, setIndex] = useState(0);
+    let [index, setIndex] = useState(241);
 
-    function getRandomIndex(): void {
-        setIndex(Math.floor(Math.random() * wimlts.length))
+    function getNext(): void {
+        setIndex(++index)
+      if (index === wimlts.length) {
+        setIndex(0)
+      }
     }
 
-    const wimlts: string[] = [
+    const wimlts: string[] = shuffle([
       'Who is most likely to listen classical music?',
       'Who is most likely to go the museum very often?',
       'Who is most likely to be rich?',
@@ -254,7 +257,20 @@ const App: React.FC = () => {
       'Who is most likely to become a stripper?',
       'Who is most likely to go crazy and even spend some time in a looney bin, a few years from now?',
       'Who is most likely to have something embarrassing about them go viral'
-    ];
+    ]);
+
+    function shuffle(array: string[]) {
+      let currentIndex = array.length, temporaryValue, randomIndex;
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
 
     return (
         <header className="App-header">
@@ -262,7 +278,7 @@ const App: React.FC = () => {
                 <p>{wimlts[index]}</p>
             </div>
             <div>
-                <Button variant="contained" onClick={() => getRandomIndex()} color="primary" size="large">
+                <Button variant="contained" onClick={() => getNext()} color="primary" size="large">
                     Next
                 </Button>
             </div>
