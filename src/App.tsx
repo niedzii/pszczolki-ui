@@ -1,13 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Button} from "@material-ui/core";
-import {css, keyframes} from "emotion";
+import {css} from "emotion";
 import {questions} from "./Questions";
 
 const App: React.FC = () => {
 
     let [index, setIndex] = useState(0);
     let [buttonLabel, setButtonLabel] = useState('Next');
+    let [wimlts, setWimlts] = useState([] as string[]);
+
+    useEffect(() => {
+        setWimlts(shuffle(questions));
+    }, []);
 
     function getNext(): void {
         setIndex(++index);
@@ -20,8 +25,6 @@ const App: React.FC = () => {
             setIndex(0)
         }
     }
-
-    const wimlts: string[] = shuffle(questions);
 
     const counter = css`
         padding-top: 15px;
@@ -56,7 +59,6 @@ const App: React.FC = () => {
                 {index + 1}/{wimlts.length}
             </div>
         </header>
-
     );
 };
 
