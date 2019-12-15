@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {Button} from "@material-ui/core";
-import {css} from "emotion";
+import {css, cx} from "emotion";
 import {questions} from "./Questions";
 
 const App: React.FC = () => {
 
-    let [index, setIndex] = useState(0);
-    let [buttonLabel, setButtonLabel] = useState('Next');
+    let [selectedIndex, setIndex] = useState(0);
     let [wimlts, setWimlts] = useState([] as string[]);
 
     useEffect(() => {
@@ -15,13 +13,9 @@ const App: React.FC = () => {
     }, []);
 
     function getNext(): void {
-        setIndex(++index);
-        setButtonLabel('Next');
-        if (index === wimlts.length - 1) {
-            setButtonLabel('Start over');
-        }
+        setIndex(++selectedIndex);
 
-        if (index === wimlts.length) {
+        if (selectedIndex === wimlts.length) {
             setIndex(0)
         }
     }
@@ -42,24 +36,58 @@ const App: React.FC = () => {
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
         }
+        array.push("You have reached the end :)");
         return array;
     }
 
     return (
-        <header className="App-header">
-            <div className="App">
-                <p>{wimlts[index]}</p>
+        <header
+            className="App-header"
+            style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gridTemplateRows: "3em auto",
+                justifyItems: "center"
+            }}
+            onClick={() => getNext()}
+        >
+            <div className="App" style={{position: "relative", width: "100vw"}}>
+                {wimlts.map((text, index) => (
+                    <div
+                        key={text}
+                        className={cx(
+                            textStyle,
+                            index === selectedIndex && selectedTextStyle
+                        )}
+                    >
+                        {text}
+                    </div>
+                ))}
             </div>
             <div>
-                <Button variant="contained" onClick={() => getNext()} color="primary" size="large">
-                    {buttonLabel}
-                </Button>
-            </div>
-            <div className={counter}>
-                {index + 1}/{wimlts.length}
+                {selectedIndex < wimlts.length && (
+                    <div className={counter}>
+                        {selectedIndex + 1}/{wimlts.length}
+                    </div>
+                )}
             </div>
         </header>
     );
 };
+
+const selectedTextStyle = css({
+    transition: `opacity 200ms ease 200ms`,
+    opacity: 1
+});
+
+const textStyle = css({
+    transition: `opacity 200ms ease`,
+    opacity: 0,
+    position: "absolute",
+    left: 0,
+    top: 360,
+    bottom: 0,
+    right: 0
+});
 
 export default App;
