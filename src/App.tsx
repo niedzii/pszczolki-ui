@@ -20,13 +20,6 @@ const App: React.FC = () => {
         }
     }
 
-    const counter = css`
-        padding-top: 15px;
-        font-size: 20px;
-        color: white;
-        text-align: center;
-    `;
-
     function shuffle(array: string[]) {
         let currentIndex = array.length, temporaryValue, randomIndex;
         while (0 !== currentIndex) {
@@ -53,23 +46,25 @@ const App: React.FC = () => {
         >
             <div className="App" style={{position: "relative", width: "100vw"}}>
                 {wimlts.map((text, index) => (
-                    <div
-                        key={text}
-                        className={cx(
-                            textStyle,
-                            index === selectedIndex && selectedTextStyle
-                        )}
-                    >
-                        {text}
-                    </div>
+                    <>
+                        <div
+                            key={text}
+                            className={cx(
+                                textStyle,
+                                index === selectedIndex && selectedTextStyle
+                            )}
+                        >
+                            {text}
+                        </div>
+                        <div
+                            className={cx(
+                                counterStyle,
+                                index === selectedIndex && selectedTextStyle
+                            )}>
+                            {selectedIndex + 1}/{wimlts.length}
+                        </div>
+                     </>
                 ))}
-            </div>
-            <div>
-                {selectedIndex < wimlts.length && (
-                    <div className={counter}>
-                        {selectedIndex + 1}/{wimlts.length}
-                    </div>
-                )}
             </div>
         </header>
     );
@@ -86,6 +81,16 @@ const textStyle = css({
     position: "absolute",
     left: 0,
     top: 360,
+    bottom: 0,
+    right: 0
+});
+
+const counterStyle = css({
+    transition: `opacity 200ms ease`,
+    opacity: 0,
+    position: "absolute",
+    left: 0,
+    top: 400,
     bottom: 0,
     right: 0
 });
