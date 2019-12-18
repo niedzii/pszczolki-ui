@@ -18,12 +18,11 @@ const App: React.FC = () => {
         setIndex(++selectedIndex);
         setTimeout(function () {
             setCounterIndex(++counterIndex)
+            if (selectedIndex === wimlts.length) {
+                setIndex(0);
+                setCounterIndex(0)
+            }
         }, animationTime);
-
-        if (selectedIndex === wimlts.length) {
-            setIndex(0);
-            setCounterIndex(0)
-        }
     }
 
     function shuffle(array: string[]) {
