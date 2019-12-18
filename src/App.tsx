@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {css, cx} from "emotion";
 import {questions} from "./Questions";
+import {useMediaQuery} from "@material-ui/core";
 
 const App: React.FC = () => {
 
@@ -15,7 +16,7 @@ const App: React.FC = () => {
 
     function getNext(): void {
         setIndex(++selectedIndex);
-        setTimeout(function(){
+        setTimeout(function () {
             setCounterIndex(++counterIndex)
         }, animationTime);
 
@@ -37,6 +38,45 @@ const App: React.FC = () => {
         array.push("You have reached the end :)");
         return array;
     }
+
+    let height = 360;
+    const animationTime = 200;
+
+    function SetHeightIfMobile() {
+        if (useMediaQuery('(max-height:700px)')) {
+            height = 200;
+        }
+        if (useMediaQuery('(max-height:400px)')) {
+            height = 100;
+        }
+    }
+
+    SetHeightIfMobile();
+
+    const counterStyle = css({
+        transition: `opacity ${animationTime}ms ease`,
+        opacity: 0,
+        position: "absolute",
+        left: 0,
+        top: height + 40,
+        bottom: 0,
+        right: 0
+    });
+
+    const textStyle = css({
+        transition: `opacity ${animationTime}ms ease`,
+        opacity: 0,
+        position: "absolute",
+        left: 0,
+        top: height,
+        bottom: 0,
+        right: 0
+    });
+
+    const selectedTextStyle = css({
+        transition: `opacity ${animationTime}ms ease ${animationTime}ms`,
+        opacity: 1
+    });
 
     return (
         <header
@@ -68,38 +108,11 @@ const App: React.FC = () => {
                             )}>
                             {counterIndex + 1}/{wimlts.length}
                         </div>
-                     </>
+                    </>
                 ))}
             </div>
         </header>
     );
 };
-
-const animationTime = 200;
-
-const selectedTextStyle = css({
-    transition: `opacity ${animationTime}ms ease ${animationTime}ms`,
-    opacity: 1
-});
-
-const textStyle = css({
-    transition: `opacity ${animationTime}ms ease`,
-    opacity: 0,
-    position: "absolute",
-    left: 0,
-    top: 360,
-    bottom: 0,
-    right: 0
-});
-
-const counterStyle = css({
-    transition: `opacity ${animationTime}ms ease`,
-    opacity: 0,
-    position: "absolute",
-    left: 0,
-    top: 400,
-    bottom: 0,
-    right: 0
-});
 
 export default App;
