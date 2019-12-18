@@ -7,6 +7,7 @@ const App: React.FC = () => {
 
     let [selectedIndex, setIndex] = useState(0);
     let [wimlts, setWimlts] = useState([] as string[]);
+    let [counterIndex, setCounterIndex] = useState(0);
 
     useEffect(() => {
         setWimlts(shuffle(questions));
@@ -14,9 +15,13 @@ const App: React.FC = () => {
 
     function getNext(): void {
         setIndex(++selectedIndex);
+        setTimeout(function(){
+            setCounterIndex(++counterIndex)
+        }, animationTime);
 
         if (selectedIndex === wimlts.length) {
-            setIndex(0)
+            setIndex(0);
+            setCounterIndex(0)
         }
     }
 
@@ -61,7 +66,7 @@ const App: React.FC = () => {
                                 counterStyle,
                                 index === selectedIndex && selectedTextStyle
                             )}>
-                            {selectedIndex + 1}/{wimlts.length}
+                            {counterIndex + 1}/{wimlts.length}
                         </div>
                      </>
                 ))}
@@ -70,13 +75,15 @@ const App: React.FC = () => {
     );
 };
 
+const animationTime = 200;
+
 const selectedTextStyle = css({
-    transition: `opacity 200ms ease 200ms`,
+    transition: `opacity ${animationTime}ms ease ${animationTime}ms`,
     opacity: 1
 });
 
 const textStyle = css({
-    transition: `opacity 200ms ease`,
+    transition: `opacity ${animationTime}ms ease`,
     opacity: 0,
     position: "absolute",
     left: 0,
@@ -86,7 +93,7 @@ const textStyle = css({
 });
 
 const counterStyle = css({
-    transition: `opacity 200ms ease`,
+    transition: `opacity ${animationTime}ms ease`,
     opacity: 0,
     position: "absolute",
     left: 0,
